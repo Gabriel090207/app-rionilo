@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financeiro Rio Nilo</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="shortcut icon" href="Nova-logo-rio-nilo-_3_.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="header">
+            <nav class="navbar">
+                <div class="left-section"> <div class="menu-icon" id="menuIcon"> <i class="fas fa-bars"></i>
+                    </div>
+                    <div class="logo">
+                        <img src="Nova logo rio nilo.png" alt="Logo Rio Nilo" style="height:50px;" class="logo">
+                    </div>
+                </div>
+                </nav>
+            
+        </header>
+
+        <aside class="sidebar">
+            <nav class="main-nav">
+                <ul>
+                    <li class="active"><a href="index.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="minhasvendas.html"><i class="fas fa-shopping-cart"></i> Minhas Vendas</a></li>
+                    <li><a href="relatorio.html"><i class="fas fa-chart-bar"></i> Relatórios</a></li>
+                    <li><a href="financeiro.html"><i class="fas fa-dollar-sign"></i> Financeiro</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="dashboard-header-main">
+                <h2>Dashboard</h2>
+                <div class="filters1">
+                    <select id="periodFilter"> <option value="today">Hoje</option>
+                        <option value="yesterday">Ontem</option>
+                        <option value="last7days">Últimos 7 dias</option>
+                        <option value="currentMonth">Mês Atual</option>
+                        <option value="lastMonth">Mês Anterior</option>
+                        <option value="allTime">Todo o Período</option> </select>
+                </div>
+            </div>
+
+            <section class="sales-overview">
+                <div class="card">
+                    <h3>Vendas aprovadas</h3>
+                    <p class="value" id="total-vendas-aprovadas">R$ 0,00</p> <!-- ID Adicionado aqui -->
+                    <i class="fas fa-eye"></i>
+                </div>
+                <div class="card1">
+                    <h3>Quantidade de vendas</h3>
+                    <p class="value" id="quantidade-vendas">0</p> <!-- ID Adicionado aqui -->
+                    <i class="fas fa-eye"></i>
+                </div>
+            </section>
+
+            <section class="chart-section card3">
+                <h3>Grafico</h3>
+                <canvas id="hourlySalesChart"></canvas>
+            </section>
+        </main>
+    </div>
+    <div id="overlay"></div>
+    <script src="script.js"></script>
+</body>
+</html>

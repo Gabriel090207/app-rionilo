@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    ] <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="relatorio.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="shortcut icon" href="Nova-logo-rio-nilo-_3_.ico" type="image/x-icon">
+    <style>
+        /* Estilos específicos para esta página */
+        .school-details-view {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .school-details-header-inner { 
+            display: flex;
+            flex-wrap: wrap; 
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .school-details-header-inner h3 {
+            margin: 0;
+            color: #333;
+            flex-grow: 1; 
+            margin-bottom: 10px; 
+        }
+        .school-details-header-inner .actions {
+            display: flex;
+            flex-wrap: wrap; 
+            gap: 10px;
+        }
+        .back-button {
+            background-color: #6c757d; 
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .back-button:hover {
+            background-color: #5a6268;
+        }
+        .schools-table-container {
+            overflow-x: auto; 
+        }
+        /* Estilos para cards de escola */
+        .school-summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .school-summary-cards .card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            cursor: pointer; 
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .school-summary-cards .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .school-summary-cards .card h3 {
+            margin-top: 0;
+            color: #F58220; 
+        }
+        .school-summary-cards .card p {
+            margin-bottom: 5px;
+            font-size: 0.9em;
+            color: #555;
+        }
+        .school-summary-cards .card span {
+            font-weight: bold;
+            color: #333;
+        }
+        .view-school-details-btn { 
+            display: block;
+            width: 100%;
+            background-color: #F58220;
+            color: white;
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+            margin-top: 15px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .view-school-details-btn:hover {
+            background-color: #d16b0d;
+        }
+        /* Ajustes para mobile */
+        @media (max-width: 768px) {
+            .schools-filters-header,
+            .school-details-header-inner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .schools-filters-header .search-box,
+            .school-details-header-inner .actions {
+                width: 100%;
+                justify-content: center;
+                margin-top: 10px;
+            }
+            .school-details-header-inner h3 {
+                width: 100%;
+                text-align: center;
+            }
+            .search-box input {
+                width: calc(100% - 40px); /* Ajuste para não transbordar */
+            }
+        }
+        /* Estilos da tabela (adicionados para garantir o ajuste de largura) */
+        .schools-table {
+            width: 100%; 
+            min-width: 700px; /* Adapte este valor conforme o conteúdo */
+            border-collapse: collapse;
+        }
+
+        .schools-table th,
+        .schools-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            /* white-space: nowrap; */ /* Descomente se quiser forçar tudo em uma linha e usar rolagem */
+        }
+
+        .schools-table th {
+            background-color: #f2f2f2;
+            color: #333;
+            font-weight: bold;
+            position: sticky; 
+            top: 0;
+            z-index: 1; 
+        }
+        /* Larguras mínimas para colunas específicas para evitar corte no navegador */
+        .schools-table td:nth-child(1), .schools-table th:nth-child(1) { min-width: 150px; } /* Aluno */
+        .schools-table td:nth-child(2), .schools-table th:nth-child(2) { min-width: 200px; } /* Escola */
+        .schools-table td:nth-child(3), .schools-table th:nth-child(3) { min-width: 180px; } /* Produto */
+        .schools-table td:nth-child(4), .schools-table th:nth-child(4) { min-width: 100px; } /* Valor */
+        .schools-table td:nth-child(5), .schools-table th:nth-child(5) { min-width: 120px; } /* Data Compra */
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="header">
+            <nav class="navbar">
+                <div class="left-section"> <div class="menu-icon" id="menuIcon"> <i class="fas fa-bars"></i>
+                    </div>
+                    <div class="logo">
+                        <img src="Nova logo rio nilo.png" alt="Logo Rio Nilo" style="height:50px;" class="logo">
+                    </div>
+                </div>
+                </nav>
+             
+        </header>
+
+        <aside class="sidebar" id="sidebar">
+          
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="minhasvendas.html"><i class="fas fa-shopping-cart"></i> Minhas Vendas</a></li>
+                    <li class="active"><a href="relatorio.html"><i class="fas fa-chart-bar"></i> Relatórios</a></li>
+                    <li><a href="financeiro.html"><i class="fas fa-dollar-sign"></i> Financeiro</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="report-tabs-container">
+                <div class="report-tabs">
+                    <button class="report-tab" data-report-type="escolas">
+                        <i class="fas fa-graduation-cap"></i> Escolas
+                    </button>
+                    <button class="report-tab active" data-report-type="produto">
+                        <i class="fas fa-boxes"></i> Receita Por Produto
+                    </button>
+                </div>
+            </div>
+
+            <section class="report-section" id="productRevenueReport" style="display: block;">
+                <h2>Receita por Produto</h2>
+                <div class="chart-container" style="height: 400px; width: 100%;">
+                    <canvas id="productRevenueChart"></canvas>
+                </div>
+            </section>
+
+            <section class="report-section schools-report" id="schoolsReport" style="display: none;">
+                <div id="schools-summary-view">
+                    <h2>Resumo por Escolas</h2>
+                    <div class="schools-filters-header">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="schools-summary-search-input" placeholder="Pesquisar Escola"> 
+                        </div>
+                    </div>
+                    <div class="school-summary-cards" id="school-summary-cards-container">
+                        <p id="no-schools-message" style="text-align: center; margin-top: 20px; display: none;">Nenhuma escola encontrada.</p>
+                    </div>
+                </div>
+
+                <div id="school-details-view" class="school-details-view" style="display: none;">
+                    <div class="school-details-header-inner">
+                        <button class="back-button" id="back-to-schools-list-btn">
+                            <i class="fas fa-arrow-left"></i> Voltar
+                        </button>
+                        <h3 id="school-name-display">Detalhes da Escola: Carregando...</h3>
+                        <div class="actions">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="students-search-input" placeholder="Pesquisar Aluno/Produto">
+                            </div>
+                            <button class="export-button" id="export-students-btn">
+                                Exportar <i class="fas fa-file-excel"></i> 
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="schools-table-container">
+                        <table class="schools-table">
+                            <thead>
+                                <tr>
+                                    <th>Aluno</th>
+                                    <th>Escola</th>
+                                    <th>Produto</th>
+                                    <th>Valor</th>
+                                    <th>Data Compra</th>
+                                </tr>
+                            </thead>
+                            <tbody id="students-table-body">
+                                <tr><td colspan="5">Selecione uma escola para ver os detalhes.</td></tr>
+                            </tbody>
+                        </table>
+                        <p id="no-students-message-details" style="text-align: center; margin-top: 20px; display: none;">Nenhum aluno encontrado para esta escola.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <div id="overlay"></div>
+    <script src="relatorio.js"></script>
+</body>
+</html>

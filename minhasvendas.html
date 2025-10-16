@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Vendas</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="minhasvendas.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="shortcut icon" href="Nova-logo-rio-nilo-_3_.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="header">
+            <nav class="navbar">
+                <div class="left-section"> <div class="menu-icon" id="menuIcon"> <i class="fas fa-bars"></i>
+                    </div>
+                    <div class="logo">
+                        <img src="Nova logo rio nilo.png" alt="Logo Rio Nilo" style="height:50px;" class="logo">
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <aside class="sidebar">
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li class="active"><a href="minhasvendas.html"><i class="fas fa-shopping-cart"></i> Minhas Vendas</a></li>
+                    <li><a href="relatorio.html"><i class="fas fa-chart-bar" ></i> Relatórios</a></li>
+                    <li><a href="financeiro.html"><i class="fas fa-dollar-sign"></i> Financeiro</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="sales-filters">
+                <div class="status-tabs">
+                    <button class="tab-button active" data-status="aprovadas">Aprovadas</button>
+                    <button class="tab-button" data-status="reembolsadas">Reembolsadas</button>
+                    <button class="tab-button" data-status="todas">Todos</button>
+                </div>
+                <div class="search-filter-row">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="search-input" placeholder="Pesquisar">
+                    </div>
+                    <button class="filter-button"><i class="fas fa-filter"></i> Filtros</button>
+                </div>
+            </div>
+
+            <div class="sales-table-container">
+                <table class="sales-table">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Hora</th>
+                            <th>Produto</th>
+                            <th>Cliente</th>
+                            <th>Status</th>
+                            <th>Valor Líquido</th>
+                            <th>Tipo Pagamento</th>
+                            <th></th> 
+                        </tr>
+                    </thead>
+                    <tbody id="sales-table-body">
+                    </tbody>
+                </table>
+                <p id="loading-message" style="text-align: center; margin-top: 20px;">Carregando vendas...</p>
+                <p id="error-message" style="text-align: center; margin-top: 20px; color: red; display: none;">Erro ao carregar vendas.</p>
+                <p id="no-sales-message" style="text-align: center; margin-top: 20px; display: none;">Nenhuma venda encontrada.</p>
+            </div>
+
+            <div class="sales-cards-mobile" id="sales-cards-mobile-container">
+                <p id="no-sales-mobile-message" style="text-align: center; margin-top: 20px; display: none;">Nenhuma venda encontrada.</p>
+            </div>
+
+            <div id="saleDetailsModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Detalhes da Venda</h2>
+                        <span class="close-button">&times;</span>
+                    </div>
+                    <div class="modal-tabs">
+                        <button class="modal-tab active" data-tab-id="client">Cliente</button>
+                        <button class="modal-tab" data-tab-id="order">Detalhes do Pedido</button>
+                        <button class="modal-tab" data-tab-id="payment">Método de Pagamento</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div id="client-tab-content" class="tab-content active">
+                            <div class="detail-item">
+                                <span class="label">Número do Pedido:</span>
+                                <span class="value" id="modalPedidoNum"></span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">Nome Completo:</span>
+                                <span class="value" id="modalNomeCompleto"></span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">Email:</span>
+                                <span class="value" id="modalEmailCliente"></span>
+                            </div>
+                        </div>
+
+                        <div id="order-tab-content" class="tab-content">
+                            <h4>Livros Comprados:</h4>
+                            <div id="modalLivrosComprados">
+                            </div>
+                        </div>
+
+                        <div id="payment-tab-content" class="tab-content">
+                            <div class="detail-item">
+                                <span class="label">Método Utilizado:</span>
+                                <span class="value" id="modalMetodoPagamento"></span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">Status Cielo:</span>
+                                <span class="value" id="modalStatusCielo"></span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">Código Status Cielo:</span>
+                                <span class="value" id="modalCodigoStatusCielo"></span>
+                            </div>
+                            <div id="payment-installments" class="detail-item hidden">
+                                <span class="label">Parcelas:</span>
+                                <span class="value" id="modalParcelas"></span>
+                            </div>
+                            <div id="payment-brand" class="detail-item hidden">
+                                <span class="label">Bandeira:</span>
+                                <span class="value" id="modalBandeira"></span>
+                            </div>
+                            <div id="payment-qr-code-string" class="detail-item hidden">
+                                <span class="label">QR Code Pix:</span>
+                                <textarea class="value" id="modalQrCodeString" readonly rows="4"></textarea>
+                                <button id="copyQrCode" class="copy-button">Copiar</button>
+                            </div>
+                            <div id="payment-qr-code-image" class="detail-item hidden">
+                                <span class="label">Imagem QR Code:</span>
+                                <img id="modalQrCodeImage" src="" alt="QR Code Pix" style="max-width: 150px; height: auto;">
+                            </div>
+                            <div id="payment-boleto-url" class="detail-item hidden">
+                                <span class="label">Link Boleto:</span>
+                                <a id="modalBoletoUrl" href="#" target="_blank" class="value">Abrir Boleto</a>
+                            </div>
+                            <div id="payment-boleto-barcode" class="detail-item hidden">
+                                <span class="label">Código de Barras:</span>
+                                <span class="value" id="modalBarCodeNumber"></span>
+                            </div>
+                            <div id="payment-boleto-digitable" class="detail-item hidden">
+                                <span class="label">Linha Digitável:</span>
+                                <span class="value" id="modalDigitableLine"></span>
+                                <button id="copyDigitableLine" class="copy-button">Copiar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <div id="overlay"></div>
+    </div>
+    
+    <script src="minhasvendas.js"></script>
+</body>
+</html>

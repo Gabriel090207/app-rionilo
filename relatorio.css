@@ -1,0 +1,683 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    overflow-x: hidden;
+}
+
+:root {
+    --cor01: #F58220;
+    --cor02: #fff;
+    --cor03: #000;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--cor02); /* Dark background inspired by Cakto */
+    color: var(--cor02); /* Light text color */
+}
+
+.dashboard-container {
+    display: grid;
+    grid-template-columns: 200px 1fr; /* Largura do Sidebar e conteúdo principal */
+    grid-template-rows: auto 1fr;     /* Altura do Header e conteúdo principal */
+    min-height: 100vh;
+}
+
+/* Header Styling (navbar) */
+
+
+/* menu */
+
+
+/* Sidebar Styling */
+/* Sidebar Styling */
+.sidebar {
+    margin-top: 70px; /* Ajuste para descer após o header fixo de 90px de altura (padding + imagem) */
+    grid-row: 2 / -1; /* Ocupa as linhas restantes após o header */
+    background-color: #fcfcfc; /* Fundo do sidebar é um branco suave */
+    padding: 20px 10px;
+    font-weight: 700;
+    border-right: 1px solid var(--cor01); /* Borda direita laranja */
+}
+
+.sidebar .main-nav ul {
+    list-style: none;
+}
+
+.sidebar .main-nav li {
+    margin-bottom: 10px;
+}
+
+.sidebar .main-nav a {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 20px;
+    color: var(--cor03); /* Cor do texto padrão do link é preto */
+    text-decoration: none;
+    transition: background-color 0.5s ease, color 0.5s ease; /* Transição para fundo e cor do texto */
+    font-size: 15px;
+}
+
+.sidebar .main-nav a:hover {
+    background-color: var(--cor01); /* Fundo laranja no hover */
+    border-radius: 10px;
+    color: var(--cor02); /* Texto branco no hover */
+}
+
+.sidebar .main-nav i {
+    margin-right: 10px;
+    font-size: 16px;
+    color: var(--cor01); /* Cor do ícone padrão é laranja */
+    padding-right: 5px;
+    transition: color 0.5s ease; /* Transição suave para a cor do ícone */
+}
+
+.sidebar .main-nav a:hover i {
+    color: var(--cor02); /* Ícone branco no hover */
+}
+
+.sidebar .main-nav .new-tag {
+    background-color: #4CAF50;
+    /* Green for new tag */
+    color: var(--cor02);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    margin-left: auto;
+    /* Pushes to the right */
+}
+
+
+/* Main Content Area */
+.main-content {
+    grid-column: 2 / -1;
+    grid-row: 2 / -1;
+    margin-top: 150px;
+    margin-left: 30px;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: var(--primary-bg-dark); /* Fundo do conteúdo principal escuro */
+    color: var(--text-light);
+}
+
+/* ----------------------------------- */
+/* Report Page Specific Styles */
+/* ----------------------------------- */
+
+.report-tabs-container {
+    background-color: var(--secondary-bg-dark);
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.report-tabs {
+    display: flex;
+    flex-wrap: wrap; /* Permite quebrar linha em mobile */
+    gap: 15px;
+}
+
+.report-tab {
+    background: none;
+    border: none;
+    color: #F58220;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.3s ease;
+    border-bottom: 2px solid transparent;
+    border: 1px solid var(--cor01);
+}
+
+.report-tab:hover {
+    background-color: #F58220;
+    border-radius: 10px;
+    color: var(--text-light);
+}
+
+
+
+/* Report Sections Grid (Two columns on desktop) */
+.report-sections-grid {
+    
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Duas colunas iguais */
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.report-section {
+    background-color: var(--secondary-bg-dark);
+    padding: 20px;
+    
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    color: black;
+    height: fit-content; /* Ajusta a altura ao conteúdo */
+}
+
+.report-filters-header,
+.schools-filters-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 15px;
+}
+
+.date-filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.date-input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.date-input-group label {
+    font-size: 12px;
+    color: var(--text-medium);
+    margin-right: 5px;
+    white-space: nowrap;
+}
+
+.date-input-group input[type="date"] {
+    background-color: var(--input-bg-dark);
+    color: var(--text-light);
+    border: 1px solid var(--border-dark);
+    padding: 8px 10px 8px 30px; /* Espaço para o ícone */
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.date-input-group i.fa-calendar-alt {
+    max-width: -20px;
+    position: absolute;
+    left: 10px;
+    color: var(--text-dark);
+    font-size: 14px;
+}
+
+.export-options {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-left: auto; /* Empurra para a direita */
+}
+
+.chart-type-select {
+    background-color: var(--input-bg-dark);
+    color: var(--text-light);
+    border: 1px solid var(--border-dark);
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.export-button {
+    
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.export-button:hover {
+    background-color: #218838; /* Verde um pouco mais escuro */
+}
+
+/* Chart Container */
+.chart-container {
+    height: 300px; /* Altura do gráfico */
+    margin-bottom: 20px;
+}
+
+/* Report Table (for product revenue) */
+.report-table-container,
+.schools-table-container {
+    overflow-x: auto; /* Rolagem horizontal para tabelas responsivas */
+}
+
+.report-table,
+.schools-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 500px; /* Garante que a tabela não fique muito pequena */
+}
+
+.report-table th,
+.schools-table th,
+.report-table td,
+.schools-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-dark);
+    color: var(--text-light);
+    font-size: 14px;
+}
+
+.report-table th,
+.schools-table th {
+    color: var(--text-medium);
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.report-table tbody tr:last-child td,
+.schools-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.report-table .no-records,
+.schools-table .no-records {
+    text-align: center;
+    font-style: italic;
+    color: var(--text-medium);
+    padding: 20px;
+}
+
+/* Schools Report specific styles */
+.schools-filters-header .search-box {
+    position: relative;
+    flex-grow: 1;
+    min-width: 180px;
+}
+
+.schools-filters-header .search-box input {
+    width: 100%;
+    padding: 8px 15px 8px 35px;
+    border: 1px solid var(--border-dark);
+    border-radius: 5px;
+    background-color: var(--input-bg-dark);
+    color: var(--text-light);
+    font-size: 14px;
+}
+
+.schools-filters-header .search-box input::placeholder {
+    color: var(--text-dark);
+}
+
+.schools-filters-header .search-box i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-dark);
+}
+
+/* ----------------------------------- */
+/* Media Queries for Responsiveness    */
+/* ----------------------------------- */
+
+/* Tablets and smaller desktops (max-width: 1024px) */
+@media (max-width: 390px) {
+    .body {
+        overflow-x: hidden;
+    }
+
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        /* Empurra os itens para as extremidades */
+        align-items: center;
+        /* Centraliza verticalmente */
+        width: 100%;
+        /* Garante que ocupe a largura total */
+        padding: 15px 20px;
+        /* Ajuste o padding conforme necessário */
+    }
+
+    /* O ícone do menu no mobile */
+    .menu-icon {
+        display: block;
+        /* Garante que o ícone esteja visível */
+        font-size: 28px;
+        color: var(--cor03);
+        /* Ou a cor desejada */
+        cursor: pointer;
+        /* Define a ordem visual. '0' ou '1' para o primeiro item */
+        order: 0;
+        /* Coloca o menu-icon como o primeiro item */
+    }
+
+    /* A logo no mobile */
+    .navbar .logo {
+        margin-left: 24px;
+        display: flex;
+        align-items: center;
+        color: var(--cor03);
+        font-size: 20px;
+        font-weight: 700;
+        /* Opcional: Adiciona um pequeno espaço entre o ícone e a logo */
+    }
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(5px);
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 1000; /* abaixo da sidebar (que tem 1001) */
+}
+
+#overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+    .dashboard-container {
+        grid-template-columns: 1fr;
+        /* Crucial: Make content take full width */
+        /* If you have grid-template-rows here, ensure it doesn't conflict
+           with the fixed header positioning. */
+    }
+
+    .header {
+        position: fixed;
+        /* Header should stay at the top */
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        /* Ensure it's on top */
+    }
+
+    .menu-icon {
+        display: block;
+        color: #F58220;
+        /* Hamburger icon MUST be visible on mobile */
+        /* Add margin-left: auto; to push it to the right within the navbar if needed */
+    }
+
+    .sidebar {
+        position: fixed;
+        /* ABSOLUTELY ESSENTIAL for sliding */
+        top: 0;
+        /* Start at the very top */
+        left: -200px;
+        /* HIDE IT OFF-SCREEN (assuming 200px width) */
+        width: 200px;
+        /* Explicit width for the sidebar */
+        height: 100%;
+        /* Take full viewport height */
+        margin-top: 0;
+        /* Remove any desktop-specific top margin */
+        z-index: 1001;
+        /* Ensure it's above the header and main content */
+        transition: left 0.3s ease-out;
+        /* Smooth slide effect */
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        /* Visual depth */
+        border-right: none;
+        /* Remove desktop border */
+        /* IMPORTANT: Do NOT set display: none; here directly.
+                      The 'left' property handles visibility for the slide. */
+    }
+
+    .sidebar.active {
+        /* This class is added by JavaScript */
+        left: 0;
+        /* Slide into view */
+    }
+    .main-content {
+        grid-column: 1 / -1;
+        margin-left: 0;
+        margin-top: 100px; /* Abaixo do header */
+        padding: 15px;
+    }
+
+    /* Relatórios - Layout empilhado em mobile */
+    .report-tabs-container {
+        padding: 10px 15px;
+    }
+
+    .report-tabs {
+        justify-content: center; /* Centraliza as abas */
+    }
+
+    .report-tab {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
+    .report-sections-grid {
+        grid-template-columns: 1fr; /* Uma única coluna */
+        gap: 15px;
+    }
+
+    .report-section {
+        padding: 15px;
+    }
+
+    .report-filters-header,
+    .schools-filters-header {
+        flex-direction: column; /* Filtros empilham */
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .date-filters,
+    .export-options {
+        width: 100%; /* Ocupam largura total */
+        justify-content: center; /* Centraliza itens dentro */
+    }
+
+    .schools-filters-header .search-box {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .export-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .chart-container {
+        height: 250px; /* Altura menor para gráfico */
+    }
+    
+}
+
+@media (max-width: 1600px){
+
+}
+
+@media (max-width: 768px) {
+    .body {
+        overflow-x: hidden;
+    }
+
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        /* Empurra os itens para as extremidades */
+        align-items: center;
+        /* Centraliza verticalmente */
+        width: 100%;
+        /* Garante que ocupe a largura total */
+        padding: 15px 20px;
+        /* Ajuste o padding conforme necessário */
+    }
+
+    /* O ícone do menu no mobile */
+    .menu-icon {
+        display: block;
+        /* Garante que o ícone esteja visível */
+        font-size: 28px;
+        color: var(--cor03);
+        /* Ou a cor desejada */
+        cursor: pointer;
+        /* Define a ordem visual. '0' ou '1' para o primeiro item */
+        order: 0;
+        /* Coloca o menu-icon como o primeiro item */
+    }
+
+    /* A logo no mobile */
+    .navbar .logo {
+        margin-left: 24px;
+        display: flex;
+        align-items: center;
+        color: var(--cor03);
+        font-size: 20px;
+        font-weight: 700;
+        /* Opcional: Adiciona um pequeno espaço entre o ícone e a logo */
+    }
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(5px);
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 1000; /* abaixo da sidebar (que tem 1001) */
+}
+
+#overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+    .dashboard-container {
+        grid-template-columns: 1fr;
+        /* Crucial: Make content take full width */
+        /* If you have grid-template-rows here, ensure it doesn't conflict
+           with the fixed header positioning. */
+    }
+
+    .header {
+        position: fixed;
+        /* Header should stay at the top */
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        /* Ensure it's on top */
+    }
+
+    .menu-icon {
+        display: block;
+        color: #F58220;
+        /* Hamburger icon MUST be visible on mobile */
+        /* Add margin-left: auto; to push it to the right within the navbar if needed */
+    }
+
+    .sidebar {
+        position: fixed;
+        /* ABSOLUTELY ESSENTIAL for sliding */
+        top: 0;
+        /* Start at the very top */
+        left: -200px;
+        /* HIDE IT OFF-SCREEN (assuming 200px width) */
+        width: 200px;
+        /* Explicit width for the sidebar */
+        height: 100%;
+        /* Take full viewport height */
+        margin-top: 0;
+        /* Remove any desktop-specific top margin */
+        z-index: 1001;
+        /* Ensure it's above the header and main content */
+        transition: left 0.3s ease-out;
+        /* Smooth slide effect */
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        /* Visual depth */
+        border-right: none;
+        /* Remove desktop border */
+        /* IMPORTANT: Do NOT set display: none; here directly.
+                      The 'left' property handles visibility for the slide. */
+    }
+
+    .sidebar.active {
+        /* This class is added by JavaScript */
+        left: 0;
+        /* Slide into view */
+    }
+    .main-content {
+        grid-column: 1 / -1;
+        margin-left: 0;
+        margin-top: 100px; /* Abaixo do header */
+        padding: 15px;
+    }
+
+    /* Relatórios - Layout empilhado em mobile */
+    .report-tabs-container {
+        padding: 10px 15px;
+    }
+
+    .report-tabs {
+        justify-content: center; /* Centraliza as abas */
+    }
+
+    .report-tab {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
+    .report-sections-grid {
+        grid-template-columns: 1fr; /* Uma única coluna */
+        gap: 15px;
+    }
+
+    .report-section {
+        padding: 15px;
+    }
+
+    .report-filters-header,
+    .schools-filters-header {
+        flex-direction: column; /* Filtros empilham */
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .date-filters,
+    .export-options {
+        width: 100%; /* Ocupam largura total */
+        justify-content: center; /* Centraliza itens dentro */
+    }
+
+    .schools-filters-header .search-box {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .export-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .chart-container {
+        height: 250px; /* Altura menor para gráfico */
+    }
+    
+}

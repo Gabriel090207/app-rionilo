@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financeiro</title> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <link rel="stylesheet" href="style.css"> <link rel="stylesheet" href="financeiro.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="shortcut icon" href="Nova-logo-rio-nilo-_3_.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="header">
+            <nav class="navbar">
+                <div class="left-section"> 
+                    <div class="menu-icon" id="menuIcon"> <i class="fas fa-bars"></i>
+                    </div>
+                    <div class="logo">
+                        <img src="Nova logo rio nilo.png" alt="Logo Rio Nilo" style="height:50px;" class="logo">
+                    </div>
+                </div>
+                </nav>
+        </header>
+
+        <aside class="sidebar" id="sidebar">  <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="minhasvendas.html"><i class="fas fa-shopping-cart"></i> Minhas Vendas</a></li>
+                    <li><a href="relatorio.html"><i class="fas fa-chart-bar"></i> Relatórios</a></li>
+                    <li class="active"><a href="financeiro.html"><i class="fas fa-dollar-sign"></i> Financeiro</a></li> </ul>
+            </nav>
+        </aside>
+ 
+        <main class="main-content">
+            <h2>Financeiro</h2>
+            <div class="balance-cards">
+                <div class="balance-card">
+                    <h3 >Valor ganho</h3>
+                    <div class="balance-info">
+                        <span class="amount" id="valor-ganho" style="color:black;  margin-top: -70px;">R$ 0,00</span> </div>
+                </div>
+                <div class="balance-card">
+                    <h3>Valor reembolsado</h3>
+                    <div class="balance-info">
+                        <span class="amount" id="valor-reembolsado" style="color:black; margin-top: -70px;">R$ 0,00</span> </div>
+                </div>
+            </div>
+            
+            <div class="finance-details-card">
+                <nav class="finance-tabs">
+                    <a href="#" class="tab-item active">Detalhes</a> </nav>
+                
+                <div class="fees-list">
+                    <div class="fee-item" id="debito-info"> <i class="fas fa-credit-card"></i> <div class="fee-details">
+                            <h4>Cartão de débito</h4>
+                            <p class="percentage" id="debito-percentage">%0</p> <p class="fee-rate" id="debito-value">R$ 0,00</p> </div>
+                    </div>
+                    
+                    <div class="fee-item" id="credito-info"> <i class="far fa-credit-card"></i> <div class="fee-details">
+                            <h4>Cartão de crédito</h4>
+                            <p class="percentage" id="credito-percentage">%0</p> <p class="fee-rate" id="credito-value">R$ 0,00</p> </div>
+                    </div>
+                    
+                    <div class="fee-item" id="pix-info"> <i class="fas fa-qrcode"></i> <div class="fee-details">
+                            <h4>Pix</h4>
+                            <p class="percentage" id="pix-percentage">%0</p> <p class="fee-rate" id="pix-value">R$ 0,00</p> </div>
+                    </div>
+
+                   
+                </div>
+            </div>
+        </main>
+    </div>
+    <div id="overlay"></div>
+    <script src="financeiro.js"></script> </body>
+</html>
