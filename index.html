@@ -37,6 +37,29 @@
                     .catch(err => console.log("Erro ao registrar SW:", err));
             }
         </script>
+
+        <!-- OneSignal SDK -->
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+
+    await OneSignal.init({
+      appId: "4e3346a9-bac1-4cbb-b366-4f17ffa4e0e4",
+
+      // Mostra o sininho (opcional) — pode deixar ON ou OFF
+      notifyButton: {
+        enable: true,
+      },
+
+      // Necessário para funcionar no Safari/iPhone
+      safari_web_id: "web.onesignal.auto.4e3346a9-bac1-4cbb-b366-4f17ffa4e0e4",
+    });
+
+  });
+</script>
+
     
     </head>
     
