@@ -1,0 +1,23 @@
+{
+    "name": "App Rio Nilo",
+    "short_name": "Rio Nilo",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#F58220",
+    "description": "Aplicativo financeiro e painel de vendas Rio Nilo.",
+    "icons": [
+      {
+        "src": "/icons/icon-192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/icons/icon-512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
+  

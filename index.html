@@ -1,14 +1,43 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financeiro Rio Nilo</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="shortcut icon" href="Nova-logo-rio-nilo-_3_.ico" type="image/x-icon">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Financeiro Rio Nilo</title>
+    
+        <!-- Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+        <!-- Estilos -->
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="Nova-logo-rio-nilo-_3_.ico" type="image/x-icon">
+    
+        <!-- Manifest -->
+        <link rel="manifest" href="/manifest.json">
+    
+        <!-- Cor do navegador -->
+        <meta name="theme-color" content="#F58220">
+    
+        <!-- iOS PWA -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="apple-mobile-web-app-title" content="App Rio Nilo">
+        <link rel="apple-touch-icon" href="/icons/icon-192.png">
+    
+        <!-- Registrar Service Worker -->
+        <script>
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker.register("/sw.js")
+                    .then(() => console.log("SW registrado com sucesso"))
+                    .catch(err => console.log("Erro ao registrar SW:", err));
+            }
+        </script>
+    
+    </head>
+    
 <body>
     <div class="dashboard-container">
         <header class="header">

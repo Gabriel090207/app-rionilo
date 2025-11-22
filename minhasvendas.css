@@ -240,7 +240,7 @@ body {
     border-radius: 15px;
     font-size: 12px;
     font-weight: bold;
-    color: white;
+    color: rgb(255, 255, 255);
 }
 
 .sales-table .status-tag.paid {
@@ -629,7 +629,7 @@ body {
 
     /* A logo no mobile */
     .navbar .logo {
-        margin-left: 24px;
+        margin-left:50%;
         display: flex;
         align-items: center;
         color: var(--cor03);
@@ -1135,14 +1135,14 @@ body {
     }
     
     .sale-card-mobile .value-mobile {
-        margin-left:45px;
+        margin-left: 90%;
         font-size: 15px;
         font-weight: bold;
         color: var(--text-mobile-light);
     }
     
     .sale-card-mobile .date-mobile {
-        margin-left:45px;
+        margin-left:95px;
         font-size: 10px;
         color: var(--text-mobile-medium);
         margin-top: 5px;
@@ -1151,10 +1151,10 @@ body {
     /* Reutilizando as tags de status existentes */
     .sale-card-mobile .status-tag {
       
-        margin-left: 10px;
+        margin-left: 80px;
         background-color: #28a745;
         display: inline-block;
-        padding: 10px 10px;
+        padding: 10px 90px;
         border-radius: 15px;
         font-size: 7px;
         font-weight: bold;

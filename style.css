@@ -391,7 +391,7 @@ body {
     
     /* A logo no mobile */
     .navbar .logo {
-        margin-left: 24px;
+        margin-left: 50%;
         display: flex;
         align-items: center;
         color: var(--cor03);
@@ -637,7 +637,7 @@ body {
     
     /* A logo no mobile */
     .navbar .logo {
-        margin-left: 24px;
+        margin-left: 10%;
         display: flex;
         align-items: center;
         color: var(--cor03);
