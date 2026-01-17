@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let allSchoolsSummary = []; // Armazena o resumo de todas as escolas
     let currentSchoolDetailsData = []; // Armazena os dados detalhados da escola atual (para filtro e exportação)
     let productRevenueChartInstance; // Instância do Chart.js (declarada no escopo principal)
+    const productRevenueChartCanvas = document.getElementById('productRevenueChart');
 
     // --- LÓGICA DO SIDEBAR (MENU HAMBÚRGUER) ---
     if (menuToggle && sidebar && closeSidebar && mainContent) {
@@ -92,41 +93,36 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     async function showSchoolDetailsView(schoolName) {
-        schoolsSummaryView.style.display = 'none'; // Esconde a lista de cards
-        schoolDetailsView.style.display = 'block'; // Mostra a view de detalhes
+        schoolsSummaryView.style.display = 'none';
+        schoolDetailsView.style.display = 'block';
         
         schoolNameDisplay.textContent = `Detalhes da Escola: ${schoolName}`;
         studentsTableBody.innerHTML = '<tr><td colspan="5">Carregando dados...</td></tr>';
         noStudentsMessageDetails.style.display = 'none';
-
+    
         try {
             const encodedSchoolName = encodeURIComponent(schoolName);
             const response = await fetch(`${BASE_URL}/relatorios/escola/${encodedSchoolName}`);
-            
+    
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(`Erro ao buscar detalhes da escola: ${errorData.error || response.statusText}`);
+                throw new Error(errorData.error || response.statusText);
             }
-            const data = await response.json(); 
-
-            currentSchoolDetailsData = data; // Armazena os dados para filtro e exportação
-            populateStudentsTable(data); // Popula a tabela
-            
+    
+            const data = await response.json();
+    
+            // ✅ SIMPLES ASSIM
+            currentSchoolDetailsData = data;
+            populateStudentsTable(data);
+    
         } catch (error) {
             console.error('Erro ao carregar detalhes da escola:', error);
-            studentsTableBody.innerHTML = '<tr><td colspan="5">Erro ao carregar dados detalhados da escola.</td></tr>';
+            studentsTableBody.innerHTML =
+                '<tr><td colspan="5">Erro ao carregar dados da escola.</td></tr>';
             noStudentsMessageDetails.style.display = 'block';
-            schoolNameDisplay.textContent = `Detalhes da Escola: ${schoolName} (Erro de Carga)`;
         }
     }
-
-    if (backToSchoolsListBtn) {
-        backToSchoolsListBtn.addEventListener('click', showSchoolsSummaryView);
-    }
-
-    // --- GRÁFICO DE RECEITA POR PRODUTO (Chart.js) ---
-    const productRevenueChartCanvas = document.getElementById('productRevenueChart'); // Declaração Única
-
+    
     async function fetchProductRevenueData() {
         console.log("Buscando dados de Receita Por Produto...");
         if (!productRevenueChartCanvas) { 
@@ -142,9 +138,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error(`Erro ao buscar receita por produto: ${errorData.error || response.statusText}`);
             }
             const produtos = await response.json();
-
+            // FILTRA APENAS VENDAS AUTORIZADAS
             const labels = produtos.map(p => p.nome);
             const dataValues = produtos.map(p => p.receita_gerada);
+            
 
             const chartData = {
                 labels: labels,
@@ -223,9 +220,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error(`Erro ao buscar resumo de escolas: ${errorData.error || response.statusText}`);
             }
             const resumoEscolas = await response.json(); 
+
+            // CONSIDERA APENAS ESCOLAS COM VENDAS AUTORIZADAS
+const resumoEscolasAutorizadas = resumoEscolas.filter(
+    escola => escola.total_vendas > 0 && escola.receita_total > 0
+);
+
             
-            allSchoolsSummary = resumoEscolas; 
-            updateSchoolsSummaryCards(allSchoolsSummary); 
+            allSchoolsSummary = resumoEscolasAutorizadas;
+updateSchoolsSummaryCards(allSchoolsSummary);
+
             
         } catch (error) {
             console.error('Erro ao carregar dados de Relatório por Escolas:', error);
@@ -244,7 +248,22 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        resumoEscolas.forEach(escola => {
+        // REMOVE ESCOLAS DUPLICADAS PELO NOME
+const escolasUnicas = [];
+const escolasMap = new Set();
+
+resumoEscolas.forEach(escola => {
+    const nome = escola.nome_escola?.trim().toLowerCase();
+
+    if (!escolasMap.has(nome)) {
+        escolasMap.add(nome);
+        escolasUnicas.push(escola);
+    }
+});
+
+
+        escolasUnicas.forEach(escola => {
+
             const card = document.createElement('div');
             card.classList.add('card');
             card.dataset.schoolName = escola.nome_escola; 

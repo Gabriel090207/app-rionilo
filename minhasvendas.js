@@ -25,6 +25,16 @@ document.addEventListener('DOMContentLoaded', function () {
     // Variável para armazenar todas as vendas carregadas do backend
     let allSales = [];
 
+    function getProductName(venda) {
+        if (Array.isArray(venda.produtos) && venda.produtos.length > 0) {
+            return venda.produtos
+                .map(p => p.name)
+                .join(', ');
+        }
+        return 'N/A';
+    }
+    
+
     // Função para buscar vendas do backend
     async function fetchSales() {
         loadingMessage.style.display = 'block';
@@ -102,7 +112,8 @@ document.addEventListener('DOMContentLoaded', function () {
             row.innerHTML = `
                 <td>${dataPart}</td>
                 <td>${horaPart}</td>
-                <td>${venda.produto || 'N/A'}</td>
+                <td>${getProductName(venda)}</td>
+
                 <td>
                     <span>${venda.cliente_nome || 'N/A'}</span>
                     <span class="email">${venda.cliente_email || 'N/A'}</span>
@@ -130,7 +141,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     <span class="client-name-mobile">${venda.cliente_nome || 'N/A'}</span>
                     <i class="fas fa-ellipsis-v view-details-mobile"></i> </div>
                 <div class="product-info-mobile">
-                    <span class="product-name-mobile">${venda.produto || 'N/A'}</span>
+                    <span class="product-name-mobile">${getProductName(venda)}</span>
+
                 </div>
                 <div class="card-footer-mobile">
                     <span class="status-tag ${venda.status_cielo_codigo === 2 ? 'paid' : (venda.status_cielo_codigo === 3 ? 'denied' : 'pending')}">${venda.status_cielo_mensagem || venda.status_interno || 'N/A'}</span>
@@ -153,83 +165,88 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Função para abrir o modal com detalhes da venda (sem mudanças, reutiliza)
     function openModal(saleId) {
-        const data = allSales.find(sale => sale.id === saleId); 
-
-        if (data) {
-            document.getElementById('modalPedidoNum').textContent = data.merchant_order_id || 'N/A';
-            document.getElementById('modalNomeCompleto').textContent = data.cliente_nome || 'N/A';
-            document.getElementById('modalEmailCliente').textContent = data.cliente_email || 'N/A';
-            
-            const modalLivrosComprados = document.getElementById('modalLivrosComprados');
-            modalLivrosComprados.innerHTML = '<h4>Livros Comprados:</h4>';
-            
-            if (data.produto && typeof data.produto === 'string') {
+        const data = allSales.find(sale => sale.id === saleId);
+    
+        if (!data) return;
+    
+        document.getElementById('modalPedidoNum').textContent = data.merchant_order_id || 'N/A';
+        document.getElementById('modalNomeCompleto').textContent = data.cliente_nome || 'N/A';
+        document.getElementById('modalEmailCliente').textContent = data.cliente_email || 'N/A';
+    
+        const modalLivrosComprados = document.getElementById('modalLivrosComprados');
+        modalLivrosComprados.innerHTML = '<h4>Livros Comprados:</h4>';
+    
+        // ✅ LISTAR PRODUTOS CORRETAMENTE
+        if (Array.isArray(data.produtos) && data.produtos.length > 0) {
+            data.produtos.forEach(prod => {
                 const itemDiv = document.createElement('div');
                 itemDiv.classList.add('order-item');
+    
                 itemDiv.innerHTML = `
-                    <img src="https://placehold.co/80x100/cccccc/333333?text=Livro" alt="${data.produto}" class="book-image">
+                    <img src="${prod.img_url || 'https://placehold.co/80x100?text=Livro'}" class="book-image">
                     <div class="item-info">
-                        <span class="item-name">${data.produto}</span>
-                        <span class="item-price">R$ ${parseFloat(data.valor).toFixed(2).replace('.', ',')}</span>
+                        <span class="item-name">${prod.name || 'Produto'}</span>
+                        <span class="item-price">R$ ${String(prod.price || '0').replace('.', ',')}</span>
                     </div>
                 `;
+    
                 modalLivrosComprados.appendChild(itemDiv);
-            } else if (data.produtos && Array.isArray(data.produtos)) {
-                 data.produtos.forEach(prod => {
-                    const itemDiv = document.createElement('div');
-                    itemDiv.classList.add('order-item');
-                    itemDiv.innerHTML = `
-                        <img src="${prod.img_url || 'https://placehold.co/80x100?text=Livro'}" alt="${prod.nome || 'Livro'}" class="book-image">
-                        <div class="item-info">
-                            <span class="item-name">${prod.nome || 'N/A'}</span>
-                            <span class="item-price">R$ ${parseFloat(prod.preco || 0).toFixed(2).replace('.', ',')}</span>
-                        </div>
-                    `;
-                    modalLivrosComprados.appendChild(itemDiv);
-                });
-            } else {
-                modalLivrosComprados.innerHTML += '<p>Nenhum produto detalhado.</p>';
-            }
-
-            document.getElementById('modalMetodoPagamento').textContent = data.tipo_pagamento || 'N/A';
-            document.getElementById('modalStatusCielo').textContent = data.status_cielo_mensagem || data.status_interno || 'N/A';
-            document.getElementById('modalCodigoStatusCielo').textContent = data.status_cielo_codigo || 'N/A';
-
-            document.getElementById('payment-installments').classList.add('hidden');
-            document.getElementById('payment-brand').classList.add('hidden');
-            document.getElementById('payment-qr-code-string').classList.add('hidden');
-            document.getElementById('payment-qr-code-image').classList.add('hidden');
-            document.getElementById('payment-boleto-url').classList.add('hidden');
-            document.getElementById('payment-boleto-barcode').classList.add('hidden');
-            document.getElementById('payment-boleto-digitable').classList.add('hidden');
-
-            if (data.tipo_pagamento === 'Cartão de Crédito' || data.tipo_pagamento === 'Cartão de Débito') {
-                document.getElementById('payment-brand').classList.remove('hidden');
-                document.getElementById('modalBandeira').textContent = data.bandeira || 'N/A';
-                if (data.tipo_pagamento === 'Cartão de Crédito' && data.installments) { 
-                    document.getElementById('payment-installments').classList.remove('hidden');
-                    document.getElementById('modalParcelas').textContent = `${data.installments}x de R$ ${(parseFloat(data.valor) / data.installments).toFixed(2).replace('.', ',')}`;
-                }
-            } else if (data.tipo_pagamento === 'PIX') {
-                document.getElementById('payment-qr-code-string').classList.remove('hidden');
-                document.getElementById('modalQrCodeString').value = data.qr_code_string || 'N/A';
-                document.getElementById('payment-qr-code-image').classList.remove('hidden');
-                document.getElementById('modalQrCodeImage').src = data.qr_code_image_url || 'https://placehold.co/150x150?text=QR+Code'; 
-            } else if (data.tipo_pagamento === 'Boleto') {
-                document.getElementById('payment-boleto-url').classList.remove('hidden');
-                document.getElementById('modalBoletoUrl').href = data.boleto_url || '#';
-                document.getElementById('modalBoletoUrl').textContent = data.boleto_url ? 'Abrir Boleto' : 'N/A';
-                document.getElementById('payment-boleto-barcode').classList.remove('hidden');
-                document.getElementById('modalBarCodeNumber').textContent = data.bar_code_number || 'N/A';
-                document.getElementById('payment-boleto-digitable').classList.remove('hidden');
-                document.getElementById('modalDigitableLine').textContent = data.digitable_line || 'N/A';
-            }
-
-            modal.style.display = 'flex';
-            showTab('client'); 
+            });
+        } else {
+            modalLivrosComprados.innerHTML += '<p>Nenhum produto encontrado.</p>';
         }
+    
+        document.getElementById('modalMetodoPagamento').textContent = data.tipo_pagamento || 'N/A';
+        document.getElementById('modalStatusCielo').textContent =
+            data.status_cielo_mensagem || data.status_interno || 'N/A';
+        document.getElementById('modalCodigoStatusCielo').textContent =
+            data.status_cielo_codigo || 'N/A';
+    
+        // Reset campos condicionais
+        document.getElementById('payment-installments').classList.add('hidden');
+        document.getElementById('payment-brand').classList.add('hidden');
+        document.getElementById('payment-qr-code-string').classList.add('hidden');
+        document.getElementById('payment-qr-code-image').classList.add('hidden');
+        document.getElementById('payment-boleto-url').classList.add('hidden');
+        document.getElementById('payment-boleto-barcode').classList.add('hidden');
+        document.getElementById('payment-boleto-digitable').classList.add('hidden');
+    
+        if (data.tipo_pagamento === 'Cartão de Crédito') {
+            document.getElementById('payment-brand').classList.remove('hidden');
+            document.getElementById('modalBandeira').textContent = data.bandeira || 'N/A';
+    
+            if (data.parcelas) {
+                document.getElementById('payment-installments').classList.remove('hidden');
+                document.getElementById('modalParcelas').textContent =
+                    `${data.parcelas}x de R$ ${(data.valor / data.parcelas).toFixed(2).replace('.', ',')}`;
+            }
+        }
+    
+        if (data.tipo_pagamento === 'PIX') {
+            document.getElementById('payment-qr-code-string').classList.remove('hidden');
+            document.getElementById('modalQrCodeString').value = data.qr_code_string || 'N/A';
+    
+            document.getElementById('payment-qr-code-image').classList.remove('hidden');
+            document.getElementById('modalQrCodeImage').src =
+                data.qr_code_image_url || 'https://placehold.co/150x150?text=QR+Code';
+        }
+    
+        if (data.tipo_pagamento === 'Boleto') {
+            document.getElementById('payment-boleto-url').classList.remove('hidden');
+            document.getElementById('modalBoletoUrl').href = data.boleto_url || '#';
+            document.getElementById('modalBoletoUrl').textContent = 'Abrir Boleto';
+    
+            document.getElementById('payment-boleto-barcode').classList.remove('hidden');
+            document.getElementById('modalBarCodeNumber').textContent = data.bar_code_number || 'N/A';
+    
+            document.getElementById('payment-boleto-digitable').classList.remove('hidden');
+            document.getElementById('modalDigitableLine').textContent = data.digitable_line || 'N/A';
+        }
+    
+        modal.style.display = 'flex';
+        showTab('client');
     }
-
+    
     function closeModal() {
         modal.style.display = 'none';
     }

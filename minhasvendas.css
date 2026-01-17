@@ -240,11 +240,12 @@ body {
     border-radius: 15px;
     font-size: 12px;
     font-weight: bold;
-    color: rgb(255, 255, 255);
+    color: rgb(228, 20, 20);
 }
 
 .sales-table .status-tag.paid {
-    background-color: #28a745; /* Verde para "Pago" */
+    background-color: #28a745;
+    color: white; /* Verde para "Pago" */
 }
 
 /* ESTILO PARA REEMBOLSADAS */
