@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
         salesCardsMobileContainer.innerHTML = ''; // Limpa os cards mobile
 
         try {
-            const response = await fetch('https://livraria-rio-nilo-backend.onrender.com/vendas?period=allTime');
+            const response = await fetch('https://livraria-rio-nilo-backend-q0lf.onrender.com/vendas?period=allTime');
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({ error: 'Resposta não é um JSON válido ou está vazia.' }));
                 throw new Error(`Erro HTTP! Status: ${response.status}, Mensagem: ${errorData.error || response.statusText || 'Erro desconhecido.'}`);

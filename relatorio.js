@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    const BASE_URL = 'https://livraria-rio-nilo-backend.onrender.com';
+    const BASE_URL = 'https://livraria-rio-nilo-backend-q0lf.onrender.com';
 
     // --- ELEMENTOS GLOBAIS ---
     const menuToggle = document.getElementById('menuToggle');

@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             // Modifica a URL para incluir o parâmetro de período
             // O backend (Flask) será responsável por filtrar os dados com base neste parâmetro
-            const response = await fetch(`https://livraria-rio-nilo-backend.onrender.com/vendas?period=${period}`);
+            const response = await fetch(`https://livraria-rio-nilo-backend-q0lf.onrender.com/vendas?period=${period}`);
 
             
             if (!response.ok) {

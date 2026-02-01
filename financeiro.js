@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
     async function fetchFinanceData() {
         console.log("Buscando dados financeiros...");
         try {
-            const response = await fetch('https://livraria-rio-nilo-backend.onrender.com/financeiro/resumo');
+            const response = await fetch('https://livraria-rio-nilo-backend-q0lf.onrender.com/financeiro/resumo');
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(`Erro ao buscar dados financeiros: ${errorData.error || response.statusText}`);
